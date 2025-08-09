@@ -123,3 +123,26 @@ class MCPClient:
                 final_text.append(response.content[0].text)
 
         return "\n".join(final_text)
+    
+    async def chat_loop(self):
+        """Run an interactive chat loop"""
+        print("\nMCP Client Started!")
+        print("Type your queries or 'quit' to exit.")
+
+        while True:
+            try:
+                query = input("\n Query: ").strip()
+
+                if query.lower() in ["quit", "exit"]:
+                    print("Exiting chat loop.")
+                    break
+
+                response = await self.process_query(query)
+                print("\n" + response)
+
+            except Exception as e:
+                print(f"\nError processing query: {str(e)}")
+    
+    async def cleanup(self):
+        """Clean up resources"""
+        await self.exit_stack.aclose()
